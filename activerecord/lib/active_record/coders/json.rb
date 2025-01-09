@@ -2,13 +2,17 @@
 
 module ActiveRecord
   module Coders # :nodoc:
-    module JSON # :nodoc:
-      def self.dump(obj)
+    class JSON # :nodoc:
+      def initialize(symbolize_names: nil)
+        @symbolize_names = symbolize_names
+      end
+
+      def dump(obj)
         ActiveSupport::JSON.encode(obj)
       end
 
-      def self.load(json)
-        ActiveSupport::JSON.decode(json) unless json.blank?
+      def load(json)
+        ActiveSupport::JSON.decode(json, symbolize_names: @symbolize_names) unless json.blank?
       end
     end
   end

@@ -114,6 +114,12 @@ class TestJSONDecoding < ActiveSupport::TestCase
     assert_raise(ArgumentError) { ActiveSupport::JSON.decode("", create_additions: true) }
   end
 
+  def test_symbolized_names_option
+    json = '{"foo":"bar"}'
+    assert_equal({ foo: "bar" }, ActiveSupport::JSON.decode(json, symbolize_names: true))
+    assert_equal({ "foo" => "bar" }, ActiveSupport::JSON.decode(json))
+  end
+
   private
     def with_parse_json_times(value)
       old_value = ActiveSupport.parse_json_times
