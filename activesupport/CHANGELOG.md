@@ -1,3 +1,13 @@
+*   `ActiveSupport::JSON` now accepts `symbolized_names` option.
+
+    It is now possible to return symbolized keys instead of string keys.
+
+    ```ruby
+    ActiveSupport::JSON.decode('{"key": "value"}', symbolized_names: true) # => { key: "value" }
+    ```
+
+    *matthaigh27*
+
 *   `ActiveSupport::Testing::NotificationAssertions`'s `assert_notification` now matches against payload subsets by default.
 
     Previously the following assertion would fail due to excess key vals in the notification payload. Now with payload subset matching, it will pass.

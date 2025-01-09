@@ -190,7 +190,7 @@ module ActiveRecord
         #     serialize :preferences, coder: Rot13JSON
         #   end
         #
-        def serialize(attr_name, coder: nil, type: Object, comparable: false, yaml: {}, **options)
+        def serialize(attr_name, coder: nil, type: Object, comparable: false, yaml: {}, json: {}, **options)
           coder ||= default_column_serializer
           unless coder
             raise ArgumentError, <<~MSG.squish
@@ -200,7 +200,7 @@ module ActiveRecord
             MSG
           end
 
-          column_serializer = build_column_serializer(attr_name, coder, type, yaml)
+          column_serializer = build_column_serializer(attr_name, coder, type, { yaml: yaml, json: json })
 
           attribute(attr_name, **options)
 
@@ -215,14 +215,16 @@ module ActiveRecord
         end
 
         private
-          def build_column_serializer(attr_name, coder, type, yaml = nil)
+          def build_column_serializer(attr_name, coder, type, options = {})
             # When ::JSON is used, force it to go through the Active Support JSON encoder
             # to ensure special objects (e.g. Active Record models) are dumped correctly
             # using the #as_json hook.
             coder = Coders::JSON if coder == ::JSON
 
             if coder == ::YAML || coder == Coders::YAMLColumn
-              Coders::YAMLColumn.new(attr_name, type, **(yaml || {}))
+              Coders::YAMLColumn.new(attr_name, type, **(options[:yaml] || {}))
+            elsif coder == Coders::JSON
+              Coders::JSON.new(**(options[:json] || {}))
             elsif coder.respond_to?(:new) && !coder.respond_to?(:load)
               coder.new(attr_name, type)
             elsif type && type != Object

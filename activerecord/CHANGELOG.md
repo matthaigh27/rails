@@ -1,3 +1,13 @@
+*   JSON serialized attributes can return symbolized keys.
+
+    When using the `JSON` coder, it is now possible to return symbolized keys instead of string keys.
+
+    ```ruby
+    serialize :config, coder: JSON, json: { symbolize_names: true }
+    ```
+
+    *matthaigh27*
+
 *   The table columns inside `schema.rb` are now sorted alphabetically.
 
     Previously they'd be sorted by creation order, which can cause merge conflicts when two
