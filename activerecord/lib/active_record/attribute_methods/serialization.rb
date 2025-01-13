@@ -215,7 +215,7 @@ module ActiveRecord
         end
 
         private
-          def build_column_serializer(attr_name, coder, type, options = {})
+          def build_column_serializer(attr_name, coder, type, json: {}, yaml: {})
             # When ::JSON is used, force it to go through the Active Support JSON encoder
             # to ensure special objects (e.g. Active Record models) are dumped correctly
             # using the #as_json hook.
