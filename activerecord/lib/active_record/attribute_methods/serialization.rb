@@ -200,7 +200,7 @@ module ActiveRecord
             MSG
           end
 
-          column_serializer = build_column_serializer(attr_name, coder, type, { yaml: yaml, json: json })
+          column_serializer = build_column_serializer(attr_name, coder, type, yaml: yaml, json: json)
 
           attribute(attr_name, **options)
 
