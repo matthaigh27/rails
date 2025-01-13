@@ -149,8 +149,8 @@ class SerializedAttributeTest < ActiveRecord::TestCase
     assert_nil t.content
   end
 
-  def test_json_symbolize_names_returns_symbolized_names
-    Topic.serialize :content, coder: JSON, json: { symbolize_names: true }
+  def test_active_support_json_coder_accepts_options
+    Topic.serialize :content, coder: ActiveSupport::JSON::Coder.new(symbolize_names: true)
     my_post = posts(:welcome)
 
     t = Topic.new(content: my_post)
@@ -501,7 +501,7 @@ class SerializedAttributeTest < ActiveRecord::TestCase
 
     klass = Class.new(ActiveRecord::Base) do
       self.table_name = Topic.table_name
-      store :content, coder: ActiveRecord::Coders::JSON
+      store :content, coder: JSON
       attribute :content, :encrypted, subtype: type_for_attribute(:content)
     end
 
@@ -515,7 +515,7 @@ class SerializedAttributeTest < ActiveRecord::TestCase
   def test_decorated_type_with_decorator_block
     klass = Class.new(ActiveRecord::Base) do
       self.table_name = Topic.table_name
-      store :content, coder: ActiveRecord::Coders::JSON
+      store :content, coder: JSON
       decorate_attributes([:content]) do |name, type|
         EncryptedType.new(subtype: type)
       end
