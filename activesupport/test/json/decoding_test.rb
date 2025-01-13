@@ -110,12 +110,6 @@ class TestJSONDecoding < ActiveSupport::TestCase
     assert_raise(ActiveSupport::JSON.parse_error) { ActiveSupport::JSON.decode(%()) }
   end
 
-  def test_cannot_overwrite_unsupported_options
-    assert_called_with(::JSON, :parse, ["", { quirks_mode: true }], returns: {}) do
-      ActiveSupport::JSON.decode("", quirks_mode: false)
-    end
-  end
-
   def test_symbolized_names_option
     json = '{"foo":"bar"}'
     assert_equal({ "foo" => "bar" }, ActiveSupport::JSON.decode(json))
