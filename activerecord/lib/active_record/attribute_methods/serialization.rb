@@ -222,9 +222,9 @@ module ActiveRecord
             coder = Coders::JSON if coder == ::JSON
 
             if coder == ::YAML || coder == Coders::YAMLColumn
-              Coders::YAMLColumn.new(attr_name, type, **(options[:yaml] || {}))
+              Coders::YAMLColumn.new(attr_name, type, yaml)
             elsif coder == Coders::JSON
-              Coders::JSON.new(**(options[:json] || {}))
+              Coders::JSON.new(json)
             elsif coder.respond_to?(:new) && !coder.respond_to?(:load)
               coder.new(attr_name, type)
             elsif type && type != Object
