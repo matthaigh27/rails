@@ -1,9 +1,14 @@
-*   `ActiveSupport::JSON` now accepts `symbolized_names` option.
+*   `ActiveSupport::JSON` now accepts options and has a new `Coder` class.
 
-    It is now possible to return symbolized keys instead of string keys.
-
+    It is now possible to pass options to `ActiveSupport::JSON`:
     ```ruby
     ActiveSupport::JSON.decode('{"key": "value"}', symbolized_names: true) # => { key: "value" }
+    ```
+
+    Or they can be set while instantiating a `Coder` object:
+    ```ruby
+    coder = ActiveSupport::JSON::Coder.new(symbolized_names: true)
+    coder.decode('{"key": "value"}') # => { key: "value" }
     ```
 
     *matthaigh27*
