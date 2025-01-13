@@ -123,7 +123,6 @@ module ActiveRecord
 
   module Coders
     autoload :ColumnSerializer, "active_record/coders/column_serializer"
-    autoload :JSON, "active_record/coders/json"
     autoload :YAMLColumn, "active_record/coders/yaml_column"
   end
 
