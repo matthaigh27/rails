@@ -149,17 +149,6 @@ class SerializedAttributeTest < ActiveRecord::TestCase
     assert_nil t.content
   end
 
-  def test_active_support_json_coder_accepts_options
-    Topic.serialize :content, coder: ActiveSupport::JSON::Coder.new(symbolize_names: true)
-    my_post = posts(:welcome)
-
-    t = Topic.new(content: my_post)
-    t.save!
-    t.reload
-
-    assert_equal(t.content, t.content.deep_symbolize_keys)
-  end
-
   def test_serialized_attribute_declared_in_subclass
     hash = { "important1" => "value1", "important2" => "value2" }
     important_topic = ImportantTopic.create("important" => hash)
@@ -501,7 +490,7 @@ class SerializedAttributeTest < ActiveRecord::TestCase
 
     klass = Class.new(ActiveRecord::Base) do
       self.table_name = Topic.table_name
-      store :content, coder: JSON
+      store :content, coder: ActiveRecord::Coders::JSON
       attribute :content, :encrypted, subtype: type_for_attribute(:content)
     end
 
@@ -515,7 +504,7 @@ class SerializedAttributeTest < ActiveRecord::TestCase
   def test_decorated_type_with_decorator_block
     klass = Class.new(ActiveRecord::Base) do
       self.table_name = Topic.table_name
-      store :content, coder: JSON
+      store :content, coder: ActiveRecord::Coders::JSON
       decorate_attributes([:content]) do |name, type|
         EncryptedType.new(subtype: type)
       end

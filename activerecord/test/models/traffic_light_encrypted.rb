@@ -16,6 +16,6 @@ class EncryptedFirstTrafficLight < ActiveRecord::Base
 end
 
 class EncryptedTrafficLightWithStoreState < TrafficLight
-  store :state, accessors: %i[ color ], coder: ActiveSupport::JSON::Coder.new
+  store :state, accessors: %i[ color ], coder: ActiveRecord::Coders::JSON
   encrypts :state
 end

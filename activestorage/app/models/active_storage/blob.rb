@@ -20,7 +20,7 @@ class ActiveStorage::Blob < ActiveStorage::Record
   MINIMUM_TOKEN_LENGTH = 28
 
   has_secure_token :key, length: MINIMUM_TOKEN_LENGTH
-  store :metadata, accessors: [ :analyzed, :identified, :composed ], coder: ActiveSupport::JSON::Coder.new
+  store :metadata, accessors: [ :analyzed, :identified, :composed ], coder: ActiveRecord::Coders::JSON
 
   class_attribute :services, default: {}
   class_attribute :service, instance_accessor: false
